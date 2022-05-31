@@ -1,0 +1,40 @@
+clc
+clear all
+close all
+warning off
+img =imread('C:\Users\Administrator\Desktop\XuLyAnh\Kodak\Kodak\kodim21.png');
+subplot(231);
+imshow(img);
+title('Anh goc');
+img1= rgb2gray(img);
+subplot(232);
+imshow(img1);
+title('Anh xam');
+sigma = 3;
+K=15;
+[X,Y]=meshgrid(linspace(-K,K,2*K +1));
+H=(((X.^2)+(Y.^2)-(2*sigma.^2))/(sigma.^4)).*exp(-(X.^2+Y.^2)/(2*sigma.^2));
+subplot(233);
+Z = surf(X,Y,H);
+title('Bo loc LoG');
+grid on
+set(Z,'LineStyle','none');
+
+%cau a: mask H
+g=[0 1 0;1 -4 1;0 1 0];
+output=imfilter(H,g);
+subplot(235);
+ms=surf(X, Y, output);
+title('Mask H');
+set(ms,'LineStyle','none');
+%Câu b: Pho bien do
+F = fft2(H);%chuyen sang mien tan so
+F2=fftshift(log(abs(F)));
+subplot(236);
+imshow(F2,[ ]);
+title('Pho bien do cua bo loc');
+%câu c: lọc ảnh (thay đổi sigma và K theo yêu cầu)
+img_LOG = imfilter(img1, H, 'symmetric', 'conv');
+subplot(234);
+imshow(img_LOG, []);
+title('Anh sau khi loc');

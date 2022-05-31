@@ -1,0 +1,8 @@
+I = imread('circles.png');
+subplot(121), imshow(I), title('Anh ban dau');
+se = strel('disk',10);%tao 1 phan tu co cau truc hinh dia, ban kinh r
+b = imclose(I,se)%thuc hien dong hinh trang thai tren hinh anh I, su dung phan tu se
+c = imopen(b,se);% thuc hien mo hinh trang thai
+d = imerode(c,se);% lam xoi mon hinh anh nhi phan I bang cach su dung cau truc se
+e = I + d;
+subplot(122),imshow(C),title('Anh sau khi lap lo trong');
